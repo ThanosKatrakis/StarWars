@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Star Wars</title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <script src="Scripts/angular.js"></script>
+    <link href="StyleSheet.css" rel="stylesheet" />
+
+    <script>
+        var app = angular.module('TheForceApp', []);
+
+        app.controller("StarWarsController", function ($scope, $http) {
+            var url = "https://swapi.dev/api/people/?search=";
+
+            $scope.GetData = FetchData;
+
+            function FetchData(name) {
+                $http.get(url + name)
+                    .then(function (response) {
+                        console.log(response);
+
+                        $scope.Users = response.data.results; // prepei na ftaseis mesa sto data mexri to result
+
+                    }, function myError(response) {
+                        console.log(response);
+                    });
+            }
+        });
+
+    </script>
+
+</head>
+<body ng-app="TheForceApp" ng-controller="StarWarsController">
+
+    <input type="text" ng-model="characterName" placeholder="Character name goes here." />
+    <button ng-click="GetData(characterName)">Search</button>
+
+    <table class="table text-light bg-dark">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Birth Date</th>
+                <th>Eye Color</th>
+                <th>Skin Color</th>
+                <th>Height</th>
+                <th>Mass</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in Users">
+                <td class="text-light">{{x.name}}</td>
+                <td class="text-light">{{x.birth_year}}</td>
+                <td class="text-light">{{x.eye_color}}</td>
+                <td class="text-light">{{x.skin_color}}</td>
+                <td class="text-light">{{x.height}}</td>
+                <td class="text-light">{{x.mass}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
